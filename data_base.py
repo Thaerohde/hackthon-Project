@@ -20,8 +20,9 @@ class User_Data:
     def check_user(self, email):
         return self.db.execute("SELECT * FROM users WHERE email = :email", email = email)
 
-    def createNewEvent(self,eventDate, eventPlace, eventType, eventName):
-        self.db.execute("INSERT INTO index (date, place, type, eventname) VALUES(:date,:place,:type,:eventname)",
-                            date = eventDate,place = eventPlace ,type = eventType, eventname = eventName)
+    def create_new_event(self, eventDate, eventPlace, eventType, eventName):
+        return self.db.execute("INSERT INTO index (date, place, type, eventname) VALUES (:date, :place, :type, :eventname)", date = eventDate, place = eventPlace ,type = eventType, eventname = eventName)
 
+    def get_events(self):
+        return self.db.execute("SELECT eventname FROM index WHERE created")
 

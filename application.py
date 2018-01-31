@@ -1,4 +1,3 @@
-from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -11,6 +10,7 @@ from data_base import User_Data
 # Configure application
 app = Flask(__name__)
 
+
 # Ensure responses aren't cached
 @app.after_request
 def after_request(response):
@@ -19,7 +19,6 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
@@ -27,14 +26,12 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///sport.db")
+sql_man = User_Data()
 
 @app.route("/",methods=["GET", "POST"])
 @login_required
 def index():
-    """TODO"""
-    """at this point you should only display the event form the database and return a html page"""
-    return "hello user"
+    return render_template("index.html")
 
 
 @app.route("/logout")
@@ -57,7 +54,7 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
+        username = request.form.get("username")
         # Ensure username was submitted
         if not request.form.get("username"):
             return apology("must provide username", 403)
@@ -67,8 +64,7 @@ def login():
             return apology("must provide password", 403)
 
         # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE email = :username",
-                          username=request.form.get("username"))
+        rows = sql_man.get_user_info(username)
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
@@ -87,15 +83,19 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
+
     # Forget any user_id
     session.clear()
+
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
+
         # Ensure username was submitted
         if not request.form.get("email"):
             return apology("Missing the E-mail")
         if not request.form.get("username"):
             return apology("Missing the name")
+
         # Ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password")
@@ -103,19 +103,22 @@ def register():
             return apology("must provide password")
         elif request.form.get("password") != request.form.get("confirmation"):
             return apology("not match")
+
         # Insert the data of the seller
         username = request.form.get("username")
         password = request.form.get("password")
         email = request.form.get("email")
         hash = generate_password_hash(password)
-        dbMan = User_Data()
         print("1")
+
         # Insert the data of the new user
-        newUser = dbMan.create_user(username, hash, email)
+        newUser = sql_man.create_user(username, hash, email)
         if not newUser:
             return apology("You are Already registered", 400)
-       # Remember which user has logged in
+
+        # Remember which user has logged in
         session["id"] = newUser
+
         # Redirect user to register page
         return redirect("/")
     else:
@@ -128,35 +131,39 @@ def start():
         return redirect("/register")
     return render_template("start.html")
 
-@app.route("/createvent", methods=["GET", "POST"])
+@app.route("/create", methods=["GET", "POST"])
 @login_required
 def createvent():
 
     """Allow the user to create events from a list"""
     if request.method == "POST":
-        eventName = request.form.get("eventname")
+        eventName = request.form.get("eventName")
+        eventDate = request.form.get("eventDate")
+        eventPlace = request.form.get("eventPlace")
+        eventType = request.form.get("eventType")
+
         if not eventName:
             return apology("please enter the event name")
-        eventDate = request.form.get("eventdate")
+
         if not eventDate:
             return apology("please enter the event date")
-        eventPlace = request.form.get("eventplace")
+
         if not eventPlace:
             return apology("please enter the event place")
-        eventType = request.form.get("eventtype")
+
         if not eventPlace:
             return apology("please enter the event type")
-        dbMann = User_Data()
-        newEvent = dbMann.createNewEvent(eventDate, eventPlace, eventType, eventName)
-        return redirect("/register")
-        print("hello")
+        session["id"] = id
+        events = sql_man.create_new_event(eventDate, eventPlace, eventType, eventName)
+        return redirect("index.html")
     else:
-        return render_template("screatevent.html")
+        return render_template("create.html")
 
 
 
-"""@app.route("/joinevent", methods=["GET", "POST"])
+@app.route("/joinevent", methods=["GET", "POST"])
+@login_required
 def joinevent():
-    TODO
-        allow the user to join the data base
-    return"""
+    if request.method == "POST":
+        events = sql_man.get_events()
+        return render_template("index.html", events = events)

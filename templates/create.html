@@ -1,0 +1,15 @@
+% extends "layout.html" %}
+
+{% block title %}
+    create
+{% endblock %}
+
+{% block main %}
+<form action="/create" method="post">
+    <input type="text" name="eventName" placeholder="event's name">Event</input>
+    <input type="text" name="eventPlace" placeholder="event's Place">Place</input>
+    <input type="text" name="eventDate" placeholder="event's Date">Date</input>
+    <input type="text" name="eventType" placeholder="event's Type">Type</input>
+    <button action="/index" type="submit"> Add </button>
+</form>
+{% endblock %}
