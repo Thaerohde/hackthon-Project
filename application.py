@@ -5,6 +5,7 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 from data_base import User_Data
+from cs50 import SQL
 
 
 # Configure application
@@ -27,6 +28,7 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 sql_man = User_Data()
+db = SQL("sqlite:///sport.db")
 
 @app.route("/",methods=["GET", "POST"])
 @login_required
@@ -141,6 +143,7 @@ def createvent():
         eventDate = request.form.get("eventDate")
         eventPlace = request.form.get("eventPlace")
         eventType = request.form.get("eventType")
+        eventType = int(eventType)
 
         if not eventName:
             return apology("please enter the event name")
@@ -153,9 +156,11 @@ def createvent():
 
         if not eventPlace:
             return apology("please enter the event type")
-        session["id"] = id
+        #db.execute("INSERT INTO history (id ,place, type, eventname) VALUES (:id, :place, :typee, :eventname)",
+       #  id =session["id"], place = eventPlace ,typee = eventType, eventname = eventName)
+
         events = sql_man.create_new_event(eventDate, eventPlace, eventType, eventName)
-        return redirect("index.html")
+        return redirect("/")
     else:
         return render_template("create.html")
 

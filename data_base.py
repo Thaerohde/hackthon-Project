@@ -21,8 +21,11 @@ class User_Data:
         return self.db.execute("SELECT * FROM users WHERE email = :email", email = email)
 
     def create_new_event(self, eventDate, eventPlace, eventType, eventName):
-        return self.db.execute("INSERT INTO index (date, place, type, eventname) VALUES (:date, :place, :type, :eventname)", date = eventDate, place = eventPlace ,type = eventType, eventname = eventName)
+        return self.db.execute("INSERT INTO history (date, place, type, eventname) VALUES (:date, :place, :type, :eventname)",
+        date = eventDate, place = eventPlace ,type = eventType, eventname = eventName)
 
     def get_events(self):
         return self.db.execute("SELECT eventname FROM index WHERE created")
 
+"""db.execute("INSERT INTO history (id,name,symbol,price,shares,total) VALUES(:id,:name,:symbol, :price,:shares,:total)",
+        id = session["user_id"],name = place["name"],symbol = bought, price =usd(place["price"]),shares = request.form.get("shares")"""
