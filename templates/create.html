@@ -6,10 +6,10 @@
 
 {% block main %}
 <form action="/create" method="post">
-    <input type="text" name="eventName" placeholder="event's name" class="form-control"></input>
-    <input type="text" name="eventPlace" placeholder="event's Place" class="form-control"></input>
-    <input type="text" name="eventDate" placeholder="event's Date" class="form-control"></input>
-    <input type="text" name="eventType" placeholder="event's Type" class="form-control"></input><br><br>
-    <button action="/index" type="submit" class="btn btn-primary"> create </button>
+    <input type="text" name="eventName" placeholder="event's name">Event</input>
+    <input type="text" name="eventPlace" placeholder="event's Place">Place</input>
+    <input type="text" name="eventDate" placeholder="event's Date">Date</input>
+    <input type="text" name="eventType" placeholder="event's Type">Type</input>
+    <button action="/index" type="submit"> Add </button>
 </form>
 {% endblock %}

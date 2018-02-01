@@ -1,17 +1,16 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    get started
+    Log In
 {% endblock %}
 
 {% block main %}
-    <form action="/start" method="post">
-
         <div class="form-group">
-            <button type="submit" class="btn btn-outline-secondary" >Create an event</button>
-            <button type="submit" class="btn btn-outline-secondary" >Join an event </button>
+            <form action="/create" method="get">
+                <button  type="submit" class="btn btn-outline-secondary">Create an event</button>
+            </form>
+            <form action="/joinevent" method="get">
+                <button  type="submit" class="btn btn-outline-secondary">Join an event </button>
+            </form>
         </div>
-
-
-    </form>
 {% endblock %}

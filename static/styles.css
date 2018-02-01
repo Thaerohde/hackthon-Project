@@ -1,10 +1,10 @@
 nav .navbar-brand
 {
-    /* size for brand*/
+    /* size for brand */
     font-size: xx-large;
 }
 
-/* colors for brand*/
+/* colors for brand */
 nav .navbar-brand .blue
 {
     color: #537fbe;
@@ -24,10 +24,10 @@ nav .navbar-brand .green
 
 main .form-control
 {
-    /* center form controls*/
+    /* center form controls */
     display: inline-block;
 
-    /* override Bootstrap's 100% width for form controls*/
+    /* override Bootstrap's 100% width for form controls */
     width: auto;
 }
 
@@ -36,16 +36,16 @@ h1 {
 }
 main
 {
-    /* scroll horizontally as needed*/
+    /* scroll horizontally as needed */
     overflow-x: auto;
 
-    /* center contents*/
+    /* center contents */
     text-align: center;
 }
 
 main img
 {
-    /* constrain images on small screens*/
+    /* constrain images on small screens */
     max-width: 100%;
 }
 
@@ -57,7 +57,10 @@ body {
     background-size: cover;
 }
 
-.btn-outline-secondary{
-/*	height:100px;*/
-	width:200px;
+.table_style{
+    font-family:Jazz LET, fantasy;
+    color: white;
+    font-size: 140%;
+    text-shadow: 5px 5px 10px gray;
+    background-color: black;
 }
