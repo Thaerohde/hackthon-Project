@@ -29,7 +29,7 @@ sql_man = User_Data()
 
 @app.route("/",methods=["GET", "POST"])
 def index():
-    events = sql_man.get_events()
+#    events = sql_man.get_events()
     return render_template("login.html")
 
 
@@ -102,8 +102,7 @@ def register():
         # Ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password")
-        elif not request.form.get("confirmation"):
-            return apology("must provide password")
+
         elif request.form.get("password") != request.form.get("confirmation"):
             return apology("not match")
 
@@ -120,16 +119,17 @@ def register():
 
         # Redirect user to register page
         flash("Welcome " + username)
-        return redirect("/")
+        return redirect("/start")
     else:
         return render_template("register.html")
 
 
 @app.route("/start", methods=["GET", "POST"])
+@login_required
 def start():
     if request.method == "GET":
         return render_template("start.html")
-    return render_template("index.html")
+    return render_template("mypage.html")
 
 @app.route("/create", methods=["GET", "POST"])
 @login_required
@@ -155,6 +155,7 @@ def createvent():
         # session["id"] = id
         new_event = sql_man.create_new_event(session["id"], eventDate, eventPlace, eventType, eventName)
         events = sql_man.get_events()
+        ### retrun my page ###
         return render_template("start.html")
     else:
         return render_template("create.html")
@@ -162,18 +163,22 @@ def createvent():
 @app.route("/joinevent", methods=["GET", "POST"])
 @login_required
 def joinevent():
-    if request.method == "POST":
+    if request.method == "GET":
         events = sql_man.get_available_events()
-        for event in events:
-            print(event)
-        return render_template("index.html", events = events)
+        return render_template("eventspage.html", events = events)
     return render_template("index.html")
 
 @app.route("/eventspage", methods=["GET", "POST"])
 @login_required
 def eventspage():
     events = sql_man.get_available_events()
-    if request.method == "GET":
-        return render_template("eventspage.html", events = events)
-    return render_template("start.html")
+
+    event_id = request.form.get("join")
+
+    if event_id:
+
+
+        sql_man.join_event(session["id"], event_id)
+
+    return render_template("eventspage.html", events = events)
 

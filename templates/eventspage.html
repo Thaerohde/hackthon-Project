@@ -13,6 +13,7 @@
             <th>Place</th>
             <th>Date</th>
             <th>Type</th>
+            <!--<th>Participants</th>-->
           </tr>
         </thead>
         <tbody>
@@ -22,6 +23,12 @@
             <td>{{ event.place }}</td>
             <td>{{ event.date }}</td>
             <td>{{ event.type }}</td>
+            <!--<td>{{ event.participant }}</td>-->
+            <td>
+              <form name="join" method="post" action="/eventspage">
+                <button name="join" type="submit" action="/index" value="{{event.index_id}}">Join</button>
+              </form>
+            </td>
           </tr>
             {% endfor %}
         </tbody>

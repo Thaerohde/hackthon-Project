@@ -27,7 +27,8 @@ class User_Data:
         return self.db.execute("SELECT * FROM events WHERE created")
 
     def get_available_events(self):
-        return self.db.execute("SELECT *FROM events  WHERE participant = 1 group by eventname")
+        return self.db.execute("SELECT * FROM events WHERE participant = 1 group by eventname")
 
-"""symbol = db.execute("SELECT sum (shares) as shares, symbol, name , price, sum(total) as total FROM history WHERE id =:id group by symbol,name",
-    id = session["user_id"])"""
+    def join_event(self, id, event_id):
+        return self.db.execute("INSERT INTO user_events (user_id, event_id) VALUES (:id, :event_id)", id=id, event_id=event_id)
+
